@@ -1,6 +1,9 @@
 # vscode files
 .vscode
 
+# keys
+*.pem
+
 # Local .terraform directories
 **/.terraform/*
 

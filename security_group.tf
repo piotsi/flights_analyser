@@ -10,12 +10,20 @@ resource "aws_security_group" "sg_kafka_ec2" {
     protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.my_ip.body)}/32"]
   }
+
   ingress {
     description = "Redshift from public subnet"
     from_port   = 5439
     to_port     = 5439
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/24"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -53,6 +61,13 @@ resource "aws_security_group" "sg_msk" {
     protocol    = "tcp"
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
     Name = "sg_msk"
   }
@@ -68,6 +83,13 @@ resource "aws_security_group" "sg_base" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

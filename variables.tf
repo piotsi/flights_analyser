@@ -33,7 +33,12 @@ variable "ami_us_east_1" {
   default = ""
 }
 
-variable "ec2_type" {
+variable "ec2_kafka_client_type" {
+  type    = string
+  default = ""
+}
+
+variable "key_pair_ec2" {
   type    = string
   default = ""
 }
