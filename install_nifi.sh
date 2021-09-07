@@ -25,6 +25,8 @@ sudo gunzip -c $NIFI_FILE | sudo tar xvf -
 sudo mv $NIFI_DIR nifi  
 sudo ./nifi/bin/nifi.sh install
 sudo sed -i '/java.arg.3=/ s/=.*/=-Xmx8000m/' ./nifi/conf/bootstrap.conf
+sudo rm -rf /opt/nifi/conf/flow.xml.gz
+sudo wget -P /opt/nifi/conf/ https://raw.githubusercontent.com/piotsik/flights_analyser/main/flow.xml.gz
 sudo ./nifi/bin/nifi.sh start
 cp /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.*/jre/lib/security/cacerts /tmp/kafka.client.truststore.jks
 echo "security.protocol=SSL" > /opt/kafka/config/client.properties
