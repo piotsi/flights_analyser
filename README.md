@@ -3,12 +3,12 @@
 [![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/piotsik/project/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=piotsik%2Fproject&benchmark=INFRASTRUCTURE+SECURITY)
 [![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/piotsik/project/cis_aws)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=piotsik%2Fproject&benchmark=CIS+AWS+V1.2)
 
-#Prerequisites
+# Prerequisites
 - Installed Terraform
 - Installed Ansible
 - Installed AWS CLI
 
-#Steps:
+# Steps:
 1. `terraform init`
 2. `terraform apply`
 3. ssh tunnel (access NiFi instance)
