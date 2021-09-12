@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   vars:
+    flights_sql: "{{lookup('file', './redshift/flights.sql') | replace('\n', '')}}"
     departures_sql: "{{lookup('file', './redshift/departures.sql') | replace('\n', '')}}"
     cluster_region: "us-east-1"
     cluster_name: "flights-analyser-cluster"
@@ -10,6 +11,15 @@
   tasks:
   # - shell: terraform output -raw blabla
   #   register: secret_arn
+  - name: Create table `flights`
+    command: >
+      aws redshift-data execute-statement
+      --region {{ cluster_region }}
+      --cluster-identifier {{ cluster_name }}
+      --database {{ db_name }}
+      --db-user {{ db_user }}
+      --sql "{{ flights_sql }}"
+
   - name: Create table `departures`
     command: >
       aws redshift-data execute-statement

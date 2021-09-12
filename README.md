@@ -9,7 +9,7 @@
 - Installed AWS CLI
     - Make sure you are in the same region you have deployed resources using Terraform (aws configure)
 
-# Steps:
+## Steps
 1. `terraform init`
 2. `terraform apply`
 3. ssh tunnel (access NiFi instance)
@@ -19,11 +19,11 @@
     - Go to: `127.0.0.1:8443/nifi` (not localhost:8443!)
     - (opt) Copy flow `scp -i kafkaKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
 
-# Deployment time:
+## Deployment time
 - 4:00 (as of 12 September 2021)
 
-# Graph of the infrastructure
+## Graph of the infrastructure
 ![graph](https://github.com/piotsik/flights_analyser/blob/main/graph.png)
 
-# Logical model of the data warehouse
+## Logical model of the data warehouse
 ![logical model](https://github.com/piotsik/flights_analyser/blob/main/redshift/logicalmodel.png)
