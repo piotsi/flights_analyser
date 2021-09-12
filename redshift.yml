@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  vars:
+    departures_sql: "{{lookup('file', './redshift/departures.sql') | replace('\n', '')}}"
+    cluster_region: "us-east-1"
+    cluster_name: "flights-analyser-cluster"
+    db_name: "flights_analyser"
+    db_user: "awsuser"
+
+  tasks:
+  # - shell: terraform output -raw blabla
+  #   register: secret_arn
+  - name: Create table `departures`
+    command: >
+      aws redshift-data execute-statement
+      --region {{ cluster_region }}
+      --cluster-identifier {{ cluster_name }}
+      --database {{ db_name }}
+      --db-user {{ db_user }}
+      --sql "{{ departures_sql }}"
+    register: list
+
+  # - name: abc
+  #   ansible.builtin.debug:
+  #     msg: "{{ list | json_query('stdout_lines[0]') }}"
+
+  # - name: Creating an empty file
+  #   local_action: copy content={{departures_sql}} dest=./abc

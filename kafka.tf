@@ -9,14 +9,14 @@ resource "aws_key_pair" "generated_key" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo '${tls_private_key.tls_pk.private_key_pem}' > ./myKey.pem
-      chmod 400 myKey.pem
+      echo '${tls_private_key.tls_pk.private_key_pem}' > ./kafkaKey.pem
+      chmod 400 kafkaKey.pem
     EOT
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = "rm ./myKey.pem"
+    command = "rm ./kafkaKey.pem"
   }
 }
 

@@ -42,3 +42,28 @@ variable "key_pair_ec2" {
   type    = string
   default = ""
 }
+
+variable "redshift_db_name" {
+  type    = string
+  default = ""
+}
+
+variable "redshift_ec2_type" {
+  type    = string
+  default = ""
+}
+
+variable "redshift_password" {
+  type    = string
+  default = ""
+}
+
+variable "redshift_username" {
+  type    = string
+  default = ""
+}
+
+variable "redshift_cluster_name" {
+  type    = string
+  default = ""
+}
