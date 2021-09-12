@@ -23,7 +23,7 @@
 - 4:00 (as of 12 September 2021)
 
 ## Graph of the infrastructure
-![graph](https://github.com/piotsik/flights_analyser/blob/main/graph.png)
+![graph](https://github.com/piotsik/flights_analyser/blob/main/images/graph.png)
 
 ## Logical model of the data warehouse
-![logical model](https://github.com/piotsik/flights_analyser/blob/main/redshift/logicalmodel.png)
+![logical model](https://github.com/piotsik/flights_analyser/blob/main/images/logicalmodel.png)
