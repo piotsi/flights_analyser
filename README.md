@@ -20,4 +20,10 @@
     - (opt) Copy flow `scp -i kafkaKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
 
 # Deployment time:
-- 2:42 (as of 12 September 2021)
+- 4:00 (as of 12 September 2021)
+
+# Graph of the infrastructure
+![graph](https://github.com/piotsik/flights_analyser/blob/main/graph.png)
+
+# Logical model of the data warehouse
+![logical model](https://github.com/piotsik/flights_analyser/blob/main/redshift/logicalmodel.png)
