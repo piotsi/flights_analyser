@@ -9,11 +9,6 @@ resource "aws_redshift_cluster" "flights_analyser_cluster" {
 }
 
 output "redshift_cluster_endpoint" {
-  description = "Redshift cluster enpoint"
+  description = "Redshift cluster endpoint"
   value       = aws_redshift_cluster.flights_analyser_cluster.endpoint
-}
-
-resource "aws_secretsmanager_secret" "secret" {
-  name = "secret"
-  recovery_window_in_days = 0
 }
