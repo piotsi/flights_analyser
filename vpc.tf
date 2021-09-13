@@ -29,8 +29,8 @@ resource "aws_subnet" "sn_public_one" {
 }
 
 resource "aws_subnet" "sn_private_one" {
-  vpc_id     = aws_vpc.vpc_main.id
-  cidr_block = var.sn_private_one_cidr
+  vpc_id            = aws_vpc.vpc_main.id
+  cidr_block        = var.sn_private_one_cidr
   availability_zone = element("${random_shuffle.az.result}", 0)
 
   tags = {
@@ -39,8 +39,8 @@ resource "aws_subnet" "sn_private_one" {
 }
 
 resource "aws_subnet" "sn_private_two" {
-  vpc_id     = aws_vpc.vpc_main.id
-  cidr_block = var.sn_private_two_cidr
+  vpc_id            = aws_vpc.vpc_main.id
+  cidr_block        = var.sn_private_two_cidr
   availability_zone = element("${random_shuffle.az.result}", 1)
 
   tags = {
@@ -49,8 +49,8 @@ resource "aws_subnet" "sn_private_two" {
 }
 
 resource "aws_subnet" "sn_private_three" {
-  vpc_id     = aws_vpc.vpc_main.id
-  cidr_block = var.sn_private_three_cidr
+  vpc_id            = aws_vpc.vpc_main.id
+  cidr_block        = var.sn_private_three_cidr
   availability_zone = element("${random_shuffle.az.result}", 2)
 
   tags = {
