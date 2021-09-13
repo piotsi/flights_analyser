@@ -40,35 +40,6 @@ resource "aws_glue_connection" "redshift_connection" {
   ]
 }
 
-resource "aws_glue_catalog_database" "glue_flights_analyser_database" {
-  name = "flights_analyser"
-}
-
-resource "aws_glue_catalog_table" "glue_aircrafts_table" {
-  name          = "aircrafts"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
-resource "aws_glue_catalog_table" "glue_arrivals_table" {
-  name          = "arrivals"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
-resource "aws_glue_catalog_table" "glue_departures_table" {
-  name          = "departures"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
-resource "aws_glue_catalog_table" "glue_flights_table" {
-  name          = "flights"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
-resource "aws_glue_catalog_table" "glue_tracks_table" {
-  name          = "tracks"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
 resource "aws_glue_crawler" "redshift_crawler" {
   name          = "redshift_crawler"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name

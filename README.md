@@ -19,8 +19,9 @@
     - Go to: `127.0.0.1:8443/nifi` (not localhost:8443!)
     - (opt) Copy flow `scp -i myKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
 
-## Approximate deployment time
-- 23m01s (as of 13 September 2021)
+## Approximate deployment and destroying time (as of 13 September 2021)
+- deployment: 23m01s
+- destroying:  3m51s
 
 ## Graph of the infrastructure
 ![graph](https://github.com/piotsik/flights_analyser/blob/main/images/graph.png)
