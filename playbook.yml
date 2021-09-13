@@ -1,0 +1,4 @@
+- hosts: localhost
+  tasks:
+    - name: redshift.yml
+      import_playbook: redshift.yaml
