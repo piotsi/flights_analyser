@@ -2,6 +2,11 @@ data "http" "my_ip" {
   url = "http://ipv4.icanhazip.com"
 }
 
+resource "random_shuffle" "az" {
+  input        = [join("", [var.aws_region, "a"]), join("", [var.aws_region, "b"]), join("", [var.aws_region, "c"]), join("", [var.aws_region, "d"])]
+  result_count = 3
+}
+
 resource "aws_vpc" "vpc_main" {
   cidr_block                       = var.vpc_main_cidr
   instance_tenancy                 = "default"
@@ -26,6 +31,7 @@ resource "aws_subnet" "sn_public_one" {
 resource "aws_subnet" "sn_private_one" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = var.sn_private_one_cidr
+  availability_zone = element("${random_shuffle.az.result}", 0)
 
   tags = {
     Name = "sn_private_one"
@@ -35,6 +41,7 @@ resource "aws_subnet" "sn_private_one" {
 resource "aws_subnet" "sn_private_two" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = var.sn_private_two_cidr
+  availability_zone = element("${random_shuffle.az.result}", 1)
 
   tags = {
     Name = "sn_private_two"
@@ -44,6 +51,7 @@ resource "aws_subnet" "sn_private_two" {
 resource "aws_subnet" "sn_private_three" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = var.sn_private_three_cidr
+  availability_zone = element("${random_shuffle.az.result}", 2)
 
   tags = {
     Name = "sn_private_three"
