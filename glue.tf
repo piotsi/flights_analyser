@@ -4,7 +4,7 @@ resource "aws_glue_connection" "msk_connection" {
   connection_type = "KAFKA"
 
   connection_properties = {
-    KAFKA_BOOTSTRAP_SERVERS = join(", ", data.aws_msk_cluster.msk_cluster.bootstrap_brokers)
+    KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers
   }
 
   physical_connection_requirements {
@@ -12,6 +12,10 @@ resource "aws_glue_connection" "msk_connection" {
     subnet_id              = aws_subnet.sn_private_one.id
     security_group_id_list = [aws_security_group.sg_msk.id]
   }
+
+  depends_on = [
+    data.aws_msk_cluster.msk_cluster
+  ]
 }
 
 resource "aws_glue_connection" "redshift_connection" {
@@ -20,7 +24,7 @@ resource "aws_glue_connection" "redshift_connection" {
   connection_type = "JDBC"
 
   connection_properties = {
-    JDBC_CONNECTION_URL = join(", ", data.aws_redshift_cluster.redshift_cluster.endpoint)
+    JDBC_CONNECTION_URL = data.aws_redshift_cluster.flights_analyser_cluster.endpoint
     PASSWORD            = var.redshift_password
     USERNAME            = var.redshift_username
   }
@@ -30,6 +34,10 @@ resource "aws_glue_connection" "redshift_connection" {
     subnet_id              = aws_subnet.sn_private_one.id
     security_group_id_list = [aws_security_group.sg_msk.id]
   }
+
+  depends_on = [
+    data.aws_redshift_cluster.flights_analyser_cluster
+  ]
 }
 
 resource "aws_glue_catalog_database" "glue_flights_analyser_database" {
@@ -58,11 +66,6 @@ resource "aws_glue_catalog_table" "glue_flights_table" {
 
 resource "aws_glue_catalog_table" "glue_tracks_table" {
   name          = "tracks"
-  database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
-}
-
-resource "aws_glue_catalog_table" "glue_departures_table" {
-  name          = "departures"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
 }
 

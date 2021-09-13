@@ -1,5 +1,8 @@
-data "aws_redshift_cluster" "redshift_cluster" {
+data "aws_redshift_cluster" "flights_analyser_cluster" {
   cluster_identifier = var.redshift_cluster_name
+  depends_on = [
+    aws_redshift_cluster.flights_analyser_cluster
+  ]
 }
 
 resource "aws_redshift_cluster" "flights_analyser_cluster" {

@@ -1,5 +1,8 @@
 data "aws_msk_cluster" "msk_cluster" {
   cluster_name = var.msk_cluster_name
+  depends_on = [
+    aws_msk_cluster.msk_cluster
+  ]
 }
 
 resource "aws_msk_cluster" "msk_cluster" {
