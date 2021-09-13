@@ -27,3 +27,13 @@
 
 ## Logical model of the data warehouse
 ![logical model](https://github.com/piotsik/flights_analyser/blob/main/images/logicalmodel.png)
+
+## Checklist
+- [x] Terraform: miscellaneous (VPC, IAM)
+- [x] Terraform: NiFi
+- [ ] Ansible: NiFi
+- [ ] Terraform: Glue
+- [x] Terraform: Redshift
+- [x] Ansible: Redshift
+- [ ] Datadog
+- [ ] Elasticsearch

@@ -67,3 +67,28 @@ variable "redshift_cluster_name" {
   type    = string
   default = ""
 }
+
+variable "msk_cluster_name" {
+  type    = string
+  default = ""
+}
+
+variable "msk_kafka_version" {
+  type    = string
+  default = ""
+}
+
+variable "msk_broker_nodes" {
+  type    = number
+  default = 1
+}
+
+variable "msk_kafka_instance_type" {
+  type    = string
+  default = ""
+}
+
+variable "msk_ebs_volume_size" {
+  type    = number
+  default = 1000
+}

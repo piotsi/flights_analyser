@@ -32,7 +32,23 @@ resource "aws_subnet" "sn_private_one" {
   }
 }
 
+resource "aws_subnet" "sn_private_two" {
+  vpc_id     = aws_vpc.vpc_main.id
+  cidr_block = var.sn_private_two_cidr
 
+  tags = {
+    Name = "sn_private_two"
+  }
+}
+
+resource "aws_subnet" "sn_private_three" {
+  vpc_id     = aws_vpc.vpc_main.id
+  cidr_block = var.sn_private_three_cidr
+
+  tags = {
+    Name = "sn_private_three"
+  }
+}
 
 resource "aws_route_table" "rt_public" {
   vpc_id = aws_vpc.vpc_main.id

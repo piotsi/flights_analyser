@@ -1,3 +1,7 @@
+data "aws_redshift_cluster" "redshift_cluster" {
+  cluster_identifier = var.redshift_cluster_name
+}
+
 resource "aws_redshift_cluster" "flights_analyser_cluster" {
   cluster_identifier  = var.redshift_cluster_name
   database_name       = var.redshift_db_name

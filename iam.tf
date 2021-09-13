@@ -17,7 +17,42 @@ resource "aws_iam_role" "role_ec2" {
       },
     ]
   })
+
   managed_policy_arns = [data.aws_iam_policy.AmazonMSKFullAccess.arn]
+}
+
+data "aws_iam_policy" "AWSGlueServiceRole" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+}
+
+data "aws_iam_policy" "AmazonMSKReadOnlyAccess" {
+  arn = "arn:aws:iam::aws:policy/AmazonMSKReadOnlyAccess"
+}
+
+data "aws_iam_policy" "AmazonRedshiftReadOnlyAccess" {
+  arn = "arn:aws:iam::aws:policy/AmazonRedshiftReadOnlyAccess"
+}
+resource "aws_iam_role" "role_glue" {
+  name = "role_glue"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "glue.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  managed_policy_arns = [
+    data.aws_iam_policy.AWSGlueServiceRole.arn,
+    data.aws_iam_policy.AmazonMSKReadOnlyAccess.arn,
+    data.aws_iam_policy.AmazonRedshiftReadOnlyAccess.arn
+  ]
 }
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
