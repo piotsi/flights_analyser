@@ -17,20 +17,14 @@ pip3 install awscli
 
 cd /opt/					           
 BASE_URL=$(wget -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'bin.tar.gz' | head -1) 
-BASE_TK_URL=$(wget -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'toolkit.*bin.tar.gz' | head -1) 
 NIFI_URL=$(wget $BASE_URL -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'bin.tar.gz' | head -1)
-NIFI_TK_URL=$(wget $BASE_TK_URL -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'bin.tar.gz' | head -1)
 NIFI_FILE=$(basename $NIFI_URL)
-NIFI_TK_FILE=$(basename $NIFI_TK_URL)
 NIFI_DIR=$(echo $NIFI_FILE| awk -F-bin.tar.gz '{print $1}')
-NIFI_TK_DIR=$(echo $NIFI_TK_FILE| awk -F-bin.tar.gz '{print $1}')
 wget $NIFI_URL
-wget $NIFI_TK_URL
 sudo gunzip -c $NIFI_FILE | sudo tar xvf -
-sudo gunzip -c $NIFI_TK_FILE | sudo tar xvf -
-sudo cp -rf $NIFI_TK_DIR $NIFI_DIR
 sudo mv $NIFI_DIR nifi
 sudo ./nifi/bin/nifi.sh install
+sudo ./nifi/bin/nifi.sh set-sensitive-properties-key "sensitivePropsKey"
 sudo sed -i '/java.arg.3=/ s/=.*/=-Xmx8000m/' ./nifi/conf/bootstrap.conf
 sudo rm -rf /opt/nifi/conf/flow.xml.gz
 sudo wget -P /opt/nifi/conf/ https://raw.githubusercontent.com/piotsik/flights_analyser/main/flow.xml.gz
