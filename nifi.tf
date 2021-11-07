@@ -28,7 +28,7 @@ resource "aws_instance" "ec2_kafka_client" {
   vpc_security_group_ids      = [aws_security_group.sg_kafka_ec2.id]
   key_name                    = aws_key_pair.generated_key.key_name
   associate_public_ip_address = true
-  user_data                   = file("install_nifi.sh")
+  user_data                   = templatefile("nifi_user_data.tftpl", { nifi_sensitive_properties_key = var.nifi_sensitive_properties_key })
 
   tags = {
     Name = "ec2_kafka_client"

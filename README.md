@@ -12,12 +12,15 @@
 ## Steps
 1. `terraform init`
 2. `terraform apply`
-3. ssh tunnel (access NiFi instance)
-    - Forward port from the instance to your machine: `ssh -i myKey.pem -L 8443:localhost:8443 ec2-user@$(terraform output -raw ec2_kafka_client_public_ip)`
-    - Check every 10 seconds if NiFi is up: `while :; do clear; echo 'NiFi listening: ' ; sudo netstat -tlnp | grep 127.0.0.1:8443 | awk '{print $4}'; sleep 10; done`
-    - Get NiFi credentials: `grep Generated /opt/nifi/logs/nifi-app*log`
-    - Go to: `127.0.0.1:8443/nifi` (not localhost:8443!)
-    - (opt) Copy flow `scp -i myKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
+3. Provide NIFI sensitive properties key 
+4. ssh tunnel (access NiFi instance) [for data flow editing]
+    - Forward port from the instance to your machine: 
+    `ssh -i myKey.pem -L 8443:localhost:8443 ec2-user@$(terraform output -raw ec2_kafka_client_public_ip)`
+    - Get NiFi credentials: 
+    `grep Generated /opt/nifi/logs/nifi-app*log`
+    - Go to `127.0.0.1:8443/nifi` (not localhost:8443!)
+    - Copy flow (optional):
+    `scp -i myKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
 
 ## Approximate deployment and destroying time (as of 13 September 2021)
 - deployment: 23m01s
@@ -32,7 +35,7 @@
 ## Checklist
 - [x] Terraform: miscellaneous (VPC, IAM)
 - [x] Terraform: NiFi
-- [ ] Ansible: NiFi
+- [ ] Nifi: Data Flow (WIP)
 - [x] Terraform: Glue
 - [x] Terraform: Redshift
 - [x] Ansible: Redshift

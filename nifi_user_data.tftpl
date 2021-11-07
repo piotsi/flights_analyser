@@ -24,7 +24,7 @@ wget $NIFI_URL
 sudo gunzip -c $NIFI_FILE | sudo tar xvf -
 sudo mv $NIFI_DIR nifi
 sudo ./nifi/bin/nifi.sh install
-sudo ./nifi/bin/nifi.sh set-sensitive-properties-key "sensitivePropsKey"
+sudo ./nifi/bin/nifi.sh set-sensitive-properties-key "${nifi_sensitive_properties_key}"
 sudo sed -i '/java.arg.3=/ s/=.*/=-Xmx8000m/' ./nifi/conf/bootstrap.conf
 sudo rm -rf /opt/nifi/conf/flow.xml.gz
 sudo wget -P /opt/nifi/conf/ https://raw.githubusercontent.com/piotsik/flights_analyser/main/flow.xml.gz
