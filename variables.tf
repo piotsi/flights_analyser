@@ -92,3 +92,15 @@ variable "msk_ebs_volume_size" {
   type    = number
   default = 1000
 }
+
+variable "nifi_sensitive_properties_key" {
+  type = string
+}
+
+variable "opensky_username" {
+  type = string
+}
+
+variable "opensky_password" {
+  type = string
+}
