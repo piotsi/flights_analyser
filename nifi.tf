@@ -28,7 +28,21 @@ resource "aws_instance" "ec2_kafka_client" {
   vpc_security_group_ids      = [aws_security_group.sg_kafka_ec2.id]
   key_name                    = aws_key_pair.generated_key.key_name
   associate_public_ip_address = true
-  user_data                   = templatefile("nifi_user_data.tftpl", { nifi_sensitive_properties_key = var.nifi_sensitive_properties_key })
+  user_data = templatefile("nifi_user_data.tftpl",
+    {
+      nifi_sensitive_properties_key = var.nifi_sensitive_properties_key,
+      opensky_username              = var.opensky_username,
+      opensky_password              = var.opensky_password,
+      kafka_topic_name              = var.kafka_topic_name
+      zookeeper_url                 = split(",", data.aws_msk_cluster.msk_cluster.zookeeper_connect_string)[0],
+      msk_bootstrap_url             = split(",", data.aws_msk_cluster.msk_cluster.bootstrap_brokers_tls)[0]
+    }
+  )
+
+  depends_on = [
+    # MSK URL is needed for configuring NiFi Kafka processor
+    data.aws_msk_cluster.msk_cluster
+  ]
 
   tags = {
     Name = "ec2_kafka_client"

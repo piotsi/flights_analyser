@@ -1,5 +1,11 @@
 #!/bin/bash -xe
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+echo "
+export OPENSKY_USERNAME=${opensky_username}
+export OPENSKY_PASSWORD=${opensky_password}
+export KAFKA_TOPIC_NAME=${kafka_topic_name}
+export ZOOKEEPER_URL=${zookeeper_url}
+export MSK_BOOTSTRAP_URL=${msk_bootstrap_url}" >> /etc/environment
 yum update -y
 yum install python3.7 java-1.8.0-openjdk-devel -y
 yum erase awscli -y
@@ -8,6 +14,7 @@ cd /opt/
 wget https://archive.apache.org/dist/kafka/2.4.0/kafka_2.12-2.4.0.tgz
 tar -xzf kafka_2.12-2.4.0.tgz
 mv kafka_2.12-2.4.0 kafka
+/opt/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --replication-factor 3 --partitions 1 --topic $KAFKA_TOPIC_NAME
 
 cd /home/ec2-user
 wget https://bootstrap.pypa.io/get-pip.py

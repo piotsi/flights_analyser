@@ -42,6 +42,7 @@ resource "aws_security_group" "sg_msk" {
     to_port     = 2181
     protocol    = "tcp"
   }
+
   ingress {
     description = "5439"
     from_port   = 5439
