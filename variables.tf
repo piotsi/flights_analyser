@@ -104,3 +104,7 @@ variable "opensky_username" {
 variable "opensky_password" {
   type = string
 }
+
+variable "kafka_topic_name" {
+  type = string
+}
