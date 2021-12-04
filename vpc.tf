@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc_main" {
   cidr_block                       = var.vpc_main_cidr
   instance_tenancy                 = "default"
   enable_dns_support               = true
-  enable_dns_hostnames             = false
+  enable_dns_hostnames             = true
   assign_generated_ipv6_cidr_block = false
 
   tags = {
@@ -88,7 +88,7 @@ resource "aws_internet_gateway" "igw_main" {
 }
 
 resource "aws_route_table_association" "rt_sn_private_one_association" {
-  subnet_id      = aws_subnet.sn_public_one.id
+  subnet_id      = aws_subnet.sn_private_one.id
   route_table_id = aws_route_table.rt_private.id
 }
 

@@ -16,7 +16,7 @@ resource "aws_security_group" "sg_kafka_ec2" {
     from_port   = 5439
     to_port     = 5439
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"]
+    cidr_blocks = [var.sn_public_one_cidr]
   }
 
   egress {
@@ -41,6 +41,26 @@ resource "aws_security_group" "sg_msk" {
     from_port   = 2181
     to_port     = 2181
     protocol    = "tcp"
+
+    security_groups = [aws_security_group.sg_kafka_ec2.id]
+  }
+
+  ingress {
+    description = "9092"
+    from_port   = 9092
+    to_port     = 9092
+    protocol    = "tcp"
+
+    security_groups = [aws_security_group.sg_kafka_ec2.id]
+  }
+
+  ingress {
+    description = "9094"
+    from_port   = 9094
+    to_port     = 9094
+    protocol    = "tcp"
+
+    security_groups = [aws_security_group.sg_kafka_ec2.id]
   }
 
   ingress {
@@ -48,18 +68,8 @@ resource "aws_security_group" "sg_msk" {
     from_port   = 5439
     to_port     = 5439
     protocol    = "tcp"
-  }
-  ingress {
-    description = "9094"
-    from_port   = 9094
-    to_port     = 9094
-    protocol    = "tcp"
-  }
-  ingress {
-    description = "9092"
-    from_port   = 9092
-    to_port     = 9092
-    protocol    = "tcp"
+
+    cidr_blocks = [var.sn_public_one_cidr]
   }
 
   egress {
@@ -84,6 +94,7 @@ resource "aws_security_group" "sg_base" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
+    self        = true
   }
 
   egress {

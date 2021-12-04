@@ -7,7 +7,7 @@
     departures_sql: "{{lookup('file', './redshift/departures.sql') | replace('\n', '')}}"
     tracks_sql: "{{lookup('file', './redshift/tracks.sql') | replace('\n', '')}}"
     cluster_region: "us-east-1"
-    cluster_name: "flights-analyser-cluster"
+    cluster_name: "rs-flights-analyser-cluster"
     db_name: "flights_analyser"
     db_user: "awsuser"
 

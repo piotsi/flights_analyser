@@ -1,12 +1,31 @@
 resource "aws_glue_catalog_database" "glue_flights_analyser_database" {
-  name = "flights_analyser"
+  name = var.redshift_db_name
 }
 
 resource "aws_glue_catalog_table" "glue_aircrafts_table" {
   name          = "aircrafts"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
+  parameters    = {
+      "classification" = "json"
+      "connectionName" = aws_glue_connection.msk_connection.name
+  }
+  table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
+    location      = var.kafka_topic_name
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    parameters                = {
+        "connectionName" = aws_glue_connection.msk_connection.name
+        "topicName"      = var.kafka_topic_name
+        "typeOfData"     = "kafka"
+    }
+
+    ser_de_info {
+        serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
     columns {
       name = "icao24"
       type = "string"
@@ -52,8 +71,27 @@ resource "aws_glue_catalog_table" "glue_aircrafts_table" {
 resource "aws_glue_catalog_table" "glue_arrivals_table" {
   name          = "arrivals"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
+  parameters    = {
+      "classification" = "json"
+      "connectionName" = aws_glue_connection.msk_connection.name
+  }
+  table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
+    location      = var.kafka_topic_name
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    parameters                = {
+        "connectionName" = aws_glue_connection.msk_connection.name
+        "topicName"      = var.kafka_topic_name
+        "typeOfData"     = "kafka"
+    }
+
+    ser_de_info {
+        serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
     columns {
       name = "airport_id"
       type = "string"
@@ -79,8 +117,27 @@ resource "aws_glue_catalog_table" "glue_arrivals_table" {
 resource "aws_glue_catalog_table" "glue_departures_table" {
   name          = "departures"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
+  parameters    = {
+      "classification" = "json"
+      "connectionName" = aws_glue_connection.msk_connection.name
+  }
+  table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
+    location      = var.kafka_topic_name
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    parameters                = {
+        "connectionName" = aws_glue_connection.msk_connection.name
+        "topicName"      = var.kafka_topic_name
+        "typeOfData"     = "kafka"
+    }
+
+    ser_de_info {
+        serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
     columns {
       name = "airport_id"
       type = "string"
@@ -106,8 +163,27 @@ resource "aws_glue_catalog_table" "glue_departures_table" {
 resource "aws_glue_catalog_table" "glue_flights_table" {
   name          = "flights"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
+  parameters    = {
+      "classification" = "json"
+      "connectionName" = aws_glue_connection.msk_connection.name
+  }
+  table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
+    location      = var.kafka_topic_name
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    parameters                = {
+        "connectionName" = aws_glue_connection.msk_connection.name
+        "topicName"      = var.kafka_topic_name
+        "typeOfData"     = "kafka"
+    }
+
+    ser_de_info {
+        serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
     columns {
       name = "aircraft_id"
       type = "int"
@@ -133,8 +209,27 @@ resource "aws_glue_catalog_table" "glue_flights_table" {
 resource "aws_glue_catalog_table" "glue_tracks_table" {
   name          = "tracks"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
+  parameters    = {
+      "classification" = "json"
+      "connectionName" = aws_glue_connection.msk_connection.name
+  }
+  table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
+    location      = var.kafka_topic_name
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    parameters                = {
+        "connectionName" = aws_glue_connection.msk_connection.name
+        "topicName"      = var.kafka_topic_name
+        "typeOfData"     = "kafka"
+    }
+
+    ser_de_info {
+        serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
     columns {
       name = "time"
       type = "timestamp"

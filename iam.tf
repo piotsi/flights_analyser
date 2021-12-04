@@ -32,6 +32,7 @@ data "aws_iam_policy" "AmazonMSKReadOnlyAccess" {
 data "aws_iam_policy" "AmazonRedshiftReadOnlyAccess" {
   arn = "arn:aws:iam::aws:policy/AmazonRedshiftReadOnlyAccess"
 }
+
 resource "aws_iam_role" "role_glue" {
   name = "role_glue"
   assume_role_policy = jsonencode({

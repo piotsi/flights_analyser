@@ -4,7 +4,7 @@ resource "aws_glue_connection" "msk_connection" {
   connection_type = "KAFKA"
 
   connection_properties = {
-    KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers
+    KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers_tls
   }
 
   physical_connection_requirements {
@@ -24,15 +24,15 @@ resource "aws_glue_connection" "redshift_connection" {
   connection_type = "JDBC"
 
   connection_properties = {
-    JDBC_CONNECTION_URL = data.aws_redshift_cluster.flights_analyser_cluster.endpoint
+    JDBC_CONNECTION_URL = "jdbc:redshift://${aws_redshift_cluster.flights_analyser_cluster.endpoint}/${var.redshift_db_name}"
     PASSWORD            = var.redshift_password
     USERNAME            = var.redshift_username
   }
 
   physical_connection_requirements {
-    availability_zone      = aws_subnet.sn_private_one.availability_zone
-    subnet_id              = aws_subnet.sn_private_one.id
-    security_group_id_list = [aws_security_group.sg_msk.id]
+    availability_zone      = aws_subnet.sn_public_one.availability_zone
+    subnet_id              = aws_subnet.sn_public_one.id
+    security_group_id_list = [aws_security_group.sg_base.id]
   }
 
   depends_on = [

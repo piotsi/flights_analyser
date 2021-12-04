@@ -34,8 +34,8 @@ resource "aws_instance" "ec2_kafka_client" {
       opensky_username              = var.opensky_username,
       opensky_password              = var.opensky_password,
       kafka_topic_name              = var.kafka_topic_name
-      zookeeper_url                 = split(",", data.aws_msk_cluster.msk_cluster.zookeeper_connect_string)[0],
-      msk_bootstrap_url             = split(",", data.aws_msk_cluster.msk_cluster.bootstrap_brokers_tls)[0]
+      zookeeper_url                 = data.aws_msk_cluster.msk_cluster.zookeeper_connect_string,
+      msk_bootstrap_url             = data.aws_msk_cluster.msk_cluster.bootstrap_brokers_tls
     }
   )
 

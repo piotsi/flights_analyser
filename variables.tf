@@ -108,3 +108,7 @@ variable "opensky_password" {
 variable "kafka_topic_name" {
   type = string
 }
+
+variable "s3_glue_script" {
+  type = string
+}

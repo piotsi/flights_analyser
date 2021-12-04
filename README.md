@@ -21,6 +21,8 @@
     - Go to `127.0.0.1:8443/nifi` (not localhost:8443!)
     - Copy flow (optional):
     `scp -i myKey.pem ec2-user@$(terraform output -raw ec2_kafka_client_public_ip):/opt/nifi/conf/flow.xml.gz .`
+5. Update Glue ETL script
+    - `aws s3 cp script.py $(terraform output -raw s3_glue_script)`
 
 ## Approximate deployment and destroying time (as of 13 September 2021)
 - deployment: 23m01s
@@ -35,7 +37,7 @@
 ## Checklist
 - [x] Terraform: miscellaneous (VPC, IAM)
 - [x] Terraform: NiFi
-- [ ] Nifi: Data Flow (WIP)
+- [x] Nifi: Data Flow
 - [x] Terraform: Glue
 - [x] Terraform: Redshift
 - [x] Ansible: Redshift

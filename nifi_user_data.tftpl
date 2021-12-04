@@ -14,7 +14,6 @@ cd /opt/
 wget https://archive.apache.org/dist/kafka/2.4.0/kafka_2.12-2.4.0.tgz
 tar -xzf kafka_2.12-2.4.0.tgz
 mv kafka_2.12-2.4.0 kafka
-/opt/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --replication-factor 3 --partitions 1 --topic $KAFKA_TOPIC_NAME
 
 cd /home/ec2-user
 wget https://bootstrap.pypa.io/get-pip.py
@@ -44,3 +43,6 @@ sudo ./nifi/bin/nifi.sh start
 cp /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.*/jre/lib/security/cacerts /tmp/kafka.client.truststore.jks
 echo "security.protocol=SSL" > /opt/kafka/config/client.properties
 echo "ssl.truststore.location=/tmp/kafka.client.truststore.jks" >> /opt/kafka/config/client.properties
+
+cd
+sudo KAFKA_HEAP_OPTS="-Xms512m -Xmx1g" /opt/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --topic $KAFKA_TOPIC_NAME --replication-factor 2 --partitions 1
