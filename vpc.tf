@@ -87,7 +87,38 @@ resource "aws_internet_gateway" "igw_main" {
   }
 }
 
+resource "aws_route_table_association" "rt_sn_private_one_association" {
+  subnet_id      = aws_subnet.sn_public_one.id
+  route_table_id = aws_route_table.rt_private.id
+}
+
+resource "aws_route_table_association" "rt_sn_private_two_association" {
+  subnet_id      = aws_subnet.sn_private_two.id
+  route_table_id = aws_route_table.rt_private.id
+}
+
+resource "aws_route_table_association" "rt_sn_private_three_association" {
+  subnet_id      = aws_subnet.sn_private_three.id
+  route_table_id = aws_route_table.rt_private.id
+}
+
 resource "aws_route_table_association" "rt_sn_public_one_association" {
   subnet_id      = aws_subnet.sn_public_one.id
   route_table_id = aws_route_table.rt_public.id
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.vpc_main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.rt_private.id, aws_route_table.rt_public.id]
+
+
+  depends_on = [
+    aws_msk_cluster.msk_cluster
+  ]
+
+  tags = {
+    Environment = "vpc_endpoint_s3"
+  }
 }
