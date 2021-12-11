@@ -50,3 +50,28 @@ resource "aws_glue_crawler" "redshift_crawler" {
     path            = join("", [aws_glue_catalog_database.glue_flights_analyser_database.name, "/%"])
   }
 }
+
+resource "aws_glue_job" "glue_job_msk_redshift" {
+  name     = "glue_job_msk_redshift"
+  role_arn = aws_iam_role.role_glue.arn
+
+  glue_version = "2.0"
+  number_of_workers = 2
+  worker_type = "G.1X"
+  max_retries = 0
+
+  default_arguments = {
+    "--job-bookmark-option": "job-bookmark-disable",
+    "--job-language": "python",
+    "--TempDir" = "${var.s3_temp}"
+  }
+
+  command {
+    name = "gluestreaming"
+    script_location = var.s3_glue_script
+  }
+}
+
+output "s3_glue_script" {
+  value = var.s3_glue_script
+}
