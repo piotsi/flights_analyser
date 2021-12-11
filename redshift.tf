@@ -16,6 +16,10 @@ resource "aws_redshift_cluster" "flights_analyser_cluster" {
   cluster_subnet_group_name    = aws_redshift_subnet_group.flights_analyser_cluster.name
   cluster_type                 = "single-node"
   skip_final_snapshot          = true
+
+  provisioner "local-exec" {
+    command = "ansible-playbook redshift.yml" 
+  }
 }
 
 output "redshift_cluster_endpoint" {
