@@ -26,7 +26,8 @@ touch opensky.pem
 openssl s_client -showcerts -servername opensky-network.org -connect opensky-network.org:443 </dev/null | openssl x509 -out opensky.pem
 keytool -import -alias filename -keystore /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.*/jre/lib/security/cacerts -storepass changeit -noprompt -file /etc/ssl/certs/opensky.pem
 CACERTS=$(readlink -f /usr/bin/java | sed "s:bin/java::")
-CACERTS="${CACERTS}lib/security/cacerts"
+CACERTS+="lib/security/cacerts"
+echo "export CACERTS="$CACERTS >> /etc/environment
 
 cd /opt/					           
 BASE_URL=$(wget -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'bin.tar.gz' | head -1) 
@@ -41,10 +42,8 @@ sudo ./nifi/bin/nifi.sh set-sensitive-properties-key "${nifi_sensitive_propertie
 sudo sed -i '/java.arg.3=/ s/=.*/=-Xmx8000m/' ./nifi/conf/bootstrap.conf
 sudo rm -rf /opt/nifi/conf/flow.xml.gz
 sudo wget -P /opt/nifi/conf/ https://raw.githubusercontent.com/piotsik/flights_analyser/main/flow.xml.gz
+sudo KAFKA_HEAP_OPTS="-Xms512m -Xmx1g" kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --topic $KAFKA_TOPIC_NAME --replication-factor 2 --partitions 1
+cp $CACERTS /tmp/kafka.client.truststore.jks
 sudo ./nifi/bin/nifi.sh start
-cp /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.*/jre/lib/security/cacerts /tmp/kafka.client.truststore.jks
 echo "security.protocol=SSL" > /opt/kafka/config/client.properties
 echo "ssl.truststore.location=/tmp/kafka.client.truststore.jks" >> /opt/kafka/config/client.properties
-
-cd
-sudo KAFKA_HEAP_OPTS="-Xms512m -Xmx1g" /opt/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --topic $KAFKA_TOPIC_NAME --replication-factor 2 --partitions 1
