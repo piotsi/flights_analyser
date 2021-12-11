@@ -25,6 +25,8 @@ cd /etc/ssl/certs
 touch opensky.pem
 openssl s_client -showcerts -servername opensky-network.org -connect opensky-network.org:443 </dev/null | openssl x509 -out opensky.pem
 keytool -import -alias filename -keystore /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.*/jre/lib/security/cacerts -storepass changeit -noprompt -file /etc/ssl/certs/opensky.pem
+CACERTS=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+CACERTS="${CACERTS}lib/security/cacerts"
 
 cd /opt/					           
 BASE_URL=$(wget -qO- https://nifi.apache.org/download.html | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -E 'bin.tar.gz' | head -1) 
