@@ -112,3 +112,7 @@ variable "kafka_topic_name" {
 variable "s3_glue_script" {
   type = string
 }
+
+variable "s3_temp" {
+  type = string
+}
