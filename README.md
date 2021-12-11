@@ -8,6 +8,7 @@
 - Installed Ansible
 - Installed AWS CLI
     - Make sure you are in the same region you have deployed resources using Terraform (aws configure)
+- Existing S3 bucket
 
 ## Steps
 1. `terraform init`
