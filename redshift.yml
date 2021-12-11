@@ -6,6 +6,7 @@
     arrivals_sql: "{{lookup('file', './redshift/arrivals.sql') | replace('\n', '')}}"
     departures_sql: "{{lookup('file', './redshift/departures.sql') | replace('\n', '')}}"
     tracks_sql: "{{lookup('file', './redshift/tracks.sql') | replace('\n', '')}}"
+    states_sql: "{{lookup('file', './redshift/states.sql') | replace('\n', '')}}"
     cluster_region: "us-east-1"
     cluster_name: "rs-flights-analyser-cluster"
     db_name: "flights_analyser"
@@ -14,50 +15,59 @@
   tasks:
   # - shell: terraform output -raw blabla
   #   register: secret_arn
-  - name: Create table `flights`
+  - name: Create table `states`
     command: >
       aws redshift-data execute-statement
       --region {{ cluster_region }}
       --cluster-identifier {{ cluster_name }}
       --database {{ db_name }}
       --db-user {{ db_user }}
-      --sql "{{ flights_sql }}"
+      --sql "{{ states_sql }}"
 
-  - name: Create table `aircrafts`
-    command: >
-      aws redshift-data execute-statement
-      --region {{ cluster_region }}
-      --cluster-identifier {{ cluster_name }}
-      --database {{ db_name }}
-      --db-user {{ db_user }}
-      --sql "{{ aircrafts_sql }}"
+  # - name: Create table `flights`
+  #   command: >
+  #     aws redshift-data execute-statement
+  #     --region {{ cluster_region }}
+  #     --cluster-identifier {{ cluster_name }}
+  #     --database {{ db_name }}
+  #     --db-user {{ db_user }}
+  #     --sql "{{ flights_sql }}"
 
-  - name: Create table `arrivals`
-    command: >
-      aws redshift-data execute-statement
-      --region {{ cluster_region }}
-      --cluster-identifier {{ cluster_name }}
-      --database {{ db_name }}
-      --db-user {{ db_user }}
-      --sql "{{ arrivals_sql }}"
+  # - name: Create table `aircrafts`
+  #   command: >
+  #     aws redshift-data execute-statement
+  #     --region {{ cluster_region }}
+  #     --cluster-identifier {{ cluster_name }}
+  #     --database {{ db_name }}
+  #     --db-user {{ db_user }}
+  #     --sql "{{ aircrafts_sql }}"
 
-  - name: Create table `departures`
-    command: >
-      aws redshift-data execute-statement
-      --region {{ cluster_region }}
-      --cluster-identifier {{ cluster_name }}
-      --database {{ db_name }}
-      --db-user {{ db_user }}
-      --sql "{{ departures_sql }}"
+  # - name: Create table `arrivals`
+  #   command: >
+  #     aws redshift-data execute-statement
+  #     --region {{ cluster_region }}
+  #     --cluster-identifier {{ cluster_name }}
+  #     --database {{ db_name }}
+  #     --db-user {{ db_user }}
+  #     --sql "{{ arrivals_sql }}"
 
-  - name: Create table `tracks`
-    command: >
-      aws redshift-data execute-statement
-      --region {{ cluster_region }}
-      --cluster-identifier {{ cluster_name }}
-      --database {{ db_name }}
-      --db-user {{ db_user }}
-      --sql "{{ tracks_sql }}"
+  # - name: Create table `departures`
+  #   command: >
+  #     aws redshift-data execute-statement
+  #     --region {{ cluster_region }}
+  #     --cluster-identifier {{ cluster_name }}
+  #     --database {{ db_name }}
+  #     --db-user {{ db_user }}
+  #     --sql "{{ departures_sql }}"
+
+  # - name: Create table `tracks`
+  #   command: >
+  #     aws redshift-data execute-statement
+  #     --region {{ cluster_region }}
+  #     --cluster-identifier {{ cluster_name }}
+  #     --database {{ db_name }}
+  #     --db-user {{ db_user }}
+  #     --sql "{{ tracks_sql }}"
   
   # - name: abc
   #   ansible.builtin.debug:

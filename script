@@ -1,0 +1,39 @@
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+from pyspark.sql import DataFrame, Row
+import datetime
+from awsglue import DynamicFrame
+
+## @params: [TempDir, JOB_NAME]
+args = getResolvedOptions(sys.argv, ['TempDir','JOB_NAME'])
+
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args['JOB_NAME'], args)
+## @type: DataSource
+## @args: [stream_type = kafka, stream_batch_time = "100 seconds", database = "flights_analyser", additionalOptions = {"startingOffsets": "earliest", "inferSchema": "false"}, table_name = "states"]
+## @return: datasource0
+## @inputs: []
+data_frame_datasource0 = glueContext.create_data_frame.from_catalog(database = "flights_analyser", table_name = "states", transformation_ctx = "datasource0", additional_options = {"startingOffsets": "earliest", "inferSchema": "false"})
+def processBatch(data_frame, batchId):
+    if (data_frame.count() > 0):
+        datasource0 = DynamicFrame.fromDF(data_frame, glueContext, "from_data_frame")
+        ## @type: ApplyMapping
+        ## @args: [mapping = [("icao24", "string", "icao24", "string"), ("firstseen", "int", "firstseen", "int"), ("estdepartureairport", "string", "estdepartureairport", "string"), ("lastseen", "int", "lastseen", "int"), ("estarrivalairport", "string", "estarrivalairport", "string"), ("callsign", "string", "callsign", "string"), ("estdepartureairporthorizdistance", "int", "estdepartureairporthorizdistance", "int"), ("estdepartureairportvertdistance", "int", "estdepartureairportvertdistance", "int"), ("estarrivalairporthorizdistance", "int", "estarrivalairporthorizdistance", "int"), ("estarrivalairportvertdistance", "int", "estarrivalairportvertdistance", "int"), ("departureairportcandidatescount", "int", "departureairportcandidatescount", "int"), ("arrivalairportcandidatescount", "int", "arrivalairportcandidatescount", "int")], transformation_ctx = "applymapping0"]
+        ## @return: applymapping0
+        ## @inputs: [frame = datasource0]
+        applymapping0 = ApplyMapping.apply(frame = datasource0, mappings = [("icao24", "string", "icao24", "string"), ("firstseen", "int", "firstseen", "int"), ("estdepartureairport", "string", "estdepartureairport", "string"), ("lastseen", "int", "lastseen", "int"), ("estarrivalairport", "string", "estarrivalairport", "string"), ("callsign", "string", "callsign", "string"), ("estdepartureairporthorizdistance", "int", "estdepartureairporthorizdistance", "int"), ("estdepartureairportvertdistance", "int", "estdepartureairportvertdistance", "int"), ("estarrivalairporthorizdistance", "int", "estarrivalairporthorizdistance", "int"), ("estarrivalairportvertdistance", "int", "estarrivalairportvertdistance", "int"), ("departureairportcandidatescount", "int", "departureairportcandidatescount", "int"), ("arrivalairportcandidatescount", "int", "arrivalairportcandidatescount", "int")], transformation_ctx = "applymapping0")
+        ## @type: DataSink
+        ## @args: [database = "flights_analyser", table_name = "flights_analyser_public_states", stream_batch_time = "100 seconds", redshift_tmp_dir = TempDir, transformation_ctx = "datasink1"]
+        ## @return: datasink1
+        ## @inputs: [frame = applymapping0]
+
+        datasink1 = glueContext.write_dynamic_frame.from_catalog(frame = applymapping0, database = "flights_analyser", table_name = "flights_analyser_public_states", redshift_tmp_dir = args["TempDir"], transformation_ctx = "datasink1")
+glueContext.forEachBatch(frame = data_frame_datasource0, batch_function = processBatch, options = {"windowSize": "5 seconds", "checkpointLocation": args["TempDir"] + "/checkpoint/"})
+job.commit()
