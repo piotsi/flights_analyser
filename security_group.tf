@@ -79,16 +79,6 @@ resource "aws_security_group" "sg_msk" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "sg_msk"
-  }
-}
-
-resource "aws_security_group" "sg_base" {
-  name        = "sg_base"
-  description = "Base Security Group"
-  vpc_id      = aws_vpc.vpc_main.id
-
   ingress {
     description = "0-65535"
     from_port   = 0
@@ -97,14 +87,7 @@ resource "aws_security_group" "sg_base" {
     self        = true
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
-    Name = "sg_base"
+    Name = "sg_msk"
   }
 }
