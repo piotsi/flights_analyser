@@ -25,9 +25,9 @@
 5. Update Glue ETL script
     - `aws s3 cp script.py $(terraform output -raw s3_glue_script)`
 
-## Approximate deployment and destroying time (as of 13 September 2021)
-- deployment: 23m01s
-- destroying:  3m51s
+## Approximate deployment and destroying time
+- deployment: around 30 minutes
+- destroying: around 3 minutes (sometimes will have to remove manually network interfaces created by glue)
 
 ## Graph of the infrastructure
 ![graph](https://github.com/piotsik/flights_analyser/blob/main/images/graph.png)
@@ -42,5 +42,5 @@
 - [x] Terraform: Glue
 - [x] Terraform: Redshift
 - [x] Ansible: Redshift
-- [ ] Datadog
-- [ ] Elasticsearch
+- [ ] ~~Datadog~~ (abandoded)
+- [ ] ~~Elasticsearch~~ (abandoded)
