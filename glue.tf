@@ -66,6 +66,8 @@ resource "aws_glue_job" "glue_job_msk_redshift" {
     "--TempDir" = "${var.s3_temp}"
   }
 
+  connections = [aws_glue_connection.msk_connection.name, aws_glue_connection.redshift_connection.name]
+
   command {
     name            = "gluestreaming"
     script_location = var.s3_glue_script
