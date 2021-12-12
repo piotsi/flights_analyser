@@ -4,7 +4,7 @@ resource "aws_glue_connection" "msk_connection" {
   connection_type = "KAFKA"
 
   connection_properties = {
-    KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers_tls
+    KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers
   }
 
   physical_connection_requirements {
@@ -32,7 +32,7 @@ resource "aws_glue_connection" "redshift_connection" {
   physical_connection_requirements {
     availability_zone      = aws_subnet.sn_public_one.availability_zone
     subnet_id              = aws_subnet.sn_public_one.id
-    security_group_id_list = [aws_security_group.sg_base.id]
+    security_group_id_list = [aws_security_group.sg_msk.id]
   }
 
   depends_on = [
