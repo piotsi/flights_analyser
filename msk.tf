@@ -18,6 +18,13 @@ resource "aws_msk_cluster" "msk_cluster" {
   kafka_version          = var.msk_kafka_version
   number_of_broker_nodes = var.msk_broker_nodes
 
+  encryption_info {
+    encryption_in_transit {
+      client_broker = "PLAINTEXT"
+      in_cluster    = true
+    }
+  }
+
   broker_node_group_info {
     instance_type   = var.msk_kafka_instance_type
     ebs_volume_size = var.msk_ebs_volume_size
