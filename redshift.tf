@@ -18,7 +18,7 @@ resource "aws_redshift_cluster" "flights_analyser_cluster" {
   skip_final_snapshot          = true
 
   provisioner "local-exec" {
-    command = "ansible-playbook redshift.yml" 
+    command = "ansible-playbook redshift.yml"
   }
 }
 
