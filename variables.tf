@@ -80,7 +80,7 @@ variable "msk_kafka_version" {
 
 variable "msk_broker_nodes" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "msk_kafka_instance_type" {

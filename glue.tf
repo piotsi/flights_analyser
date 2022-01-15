@@ -2,9 +2,14 @@ resource "aws_glue_connection" "msk_connection" {
   name            = "msk_connection"
   description     = "Connection to MSK cluster"
   connection_type = "KAFKA"
+  match_criteria  = []
 
   connection_properties = {
     KAFKA_BOOTSTRAP_SERVERS = data.aws_msk_cluster.msk_cluster.bootstrap_brokers
+    KAFKA_CLIENT_KEYSTORE = ""
+    KAFKA_CLIENT_KEYSTORE_PASSWORD = ""
+    KAFKA_CLIENT_KEY_PASSWORD = ""
+    KAFKA_SSL_ENABLED = "false"
   }
 
   physical_connection_requirements {

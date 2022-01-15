@@ -15,14 +15,14 @@
   tasks:
   # - shell: terraform output -raw blabla
   #   register: secret_arn
-  - name: Create table `states`
+  - name: Create table `flights`
     command: >
       aws redshift-data execute-statement
       --region {{ cluster_region }}
       --cluster-identifier {{ cluster_name }}
       --database {{ db_name }}
       --db-user {{ db_user }}
-      --sql "{{ states_sql }}"
+      --sql "{{ flights_sql }}"
 
   # - name: Create table `flights`
   #   command: >

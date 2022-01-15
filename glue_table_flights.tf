@@ -1,5 +1,5 @@
-resource "aws_glue_catalog_table" "flights_analyser_states" {
-  name          = "states"
+resource "aws_glue_catalog_table" "flights_analyser_flights" {
+  name          = "flights"
   database_name = aws_glue_catalog_database.glue_flights_analyser_database.name
   parameters = {
     "classification" = "json"
@@ -73,9 +73,9 @@ resource "aws_glue_catalog_table" "flights_analyser_states" {
   }
 }
 
-resource "aws_glue_catalog_table" "flights_analyser_public_states" {
+resource "aws_glue_catalog_table" "flights_analyser_public_flights" {
   database_name = "flights_analyser"
-  name          = "flights_analyser_public_states"
+  name          = "flights_analyser_public_flights"
   parameters = {
     "CrawlerSchemaDeserializerVersion" = "1.0"
     "CrawlerSchemaSerializerVersion"   = "1.0"
@@ -89,7 +89,7 @@ resource "aws_glue_catalog_table" "flights_analyser_public_states" {
   table_type = "EXTERNAL_TABLE"
 
   storage_descriptor {
-    location          = "flights_analyser.public.states"
+    location          = "flights_analyser.public.flights"
     number_of_buckets = -1
     parameters = {
       "CrawlerSchemaDeserializerVersion" = "1.0"

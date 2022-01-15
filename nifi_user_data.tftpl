@@ -42,8 +42,8 @@ sudo ./nifi/bin/nifi.sh set-sensitive-properties-key "${nifi_sensitive_propertie
 sudo sed -i '/java.arg.3=/ s/=.*/=-Xmx8000m/' ./nifi/conf/bootstrap.conf
 sudo rm -rf /opt/nifi/conf/flow.xml.gz
 sudo wget -P /opt/nifi/conf/ https://raw.githubusercontent.com/piotsik/flights_analyser/main/flow.xml.gz
-sudo KAFKA_HEAP_OPTS="-Xms512m -Xmx1g" kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --topic $KAFKA_TOPIC_NAME --replication-factor 2 --partitions 1
-cp $CACERTS /tmp/kafka.client.truststore.jks
 sudo ./nifi/bin/nifi.sh start
 echo "security.protocol=SSL" > /opt/kafka/config/client.properties
 echo "ssl.truststore.location=/tmp/kafka.client.truststore.jks" >> /opt/kafka/config/client.properties
+sudo KAFKA_HEAP_OPTS="-Xms512m -Xmx1g" /opt/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_URL --topic $KAFKA_TOPIC_NAME --replication-factor 2 --partitions 1
+sudo cp $CACERTS /tmp/kafka.client.truststore.jks

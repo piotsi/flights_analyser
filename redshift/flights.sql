@@ -1,11 +1,17 @@
 CREATE TABLE flights(
-    flight_id INTEGER IDENTITY(0,1),
-    aircraft_id INTEGER NOT NULL,
-    departure_id INTEGER NOT NULL,
-    arrival_id INTEGER NOT NULL,
-    track_id INTEGER NOT NULL,
-    FOREIGN KEY(aircraft_id) REFERENCES aircrafts(aircraft_id),
-    FOREIGN KEY(departure_id) REFERENCES departures(departure_id),
-    FOREIGN KEY(arrival_id) REFERENCES arrivals(arrival_id),
-    FOREIGN KEY(track_id) REFERENCES tracks(track_id)
+    icao24 VARCHAR(30),
+    firstSeen INTEGER,
+    estDepartureAirport VARCHAR(30),
+    lastSeen INTEGER,
+    estArrivalAirport VARCHAR(30),
+    callsign VARCHAR(30),
+    estDepartureAirportHorizDistance INTEGER,
+    estDepartureAirportVertDistance INTEGER,
+    estArrivalAirportHorizDistance INTEGER,
+    estArrivalAirportVertDistance INTEGER,
+    departureAirportCandidatesCount INTEGER,
+    arrivalAirportCandidatesCount INTEGER,
+    estDepartureAirportDistance FLOAT4,
+    estArrivalAirportDistance FLOAT4
 );
+
