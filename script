@@ -5,6 +5,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.sql import DataFrame, Row
+from pyspark.sql.functions import sqrt, pow, col
 import datetime
 from awsglue import DynamicFrame
 
@@ -33,7 +34,12 @@ def processBatch(data_frame, batchId):
         ## @args: [database = "flights_analyser", table_name = "flights_analyser_public_flights", stream_batch_time = "100 seconds", redshift_tmp_dir = TempDir, transformation_ctx = "datasink1"]
         ## @return: datasink1
         ## @inputs: [frame = applymapping0]
+        
+        estairportdistanceDf = applymapping0.toDF()
+        estairportdistanceDf = estairportdistanceDf.withColumn("estdepartureairportdistance", sqrt(pow(col('estdepartureairporthorizdistance'), 2)+pow(col('estdepartureairportvertdistance'), 2)))
+        estairportdistanceDf = estairportdistanceDf.withColumn("estarrivalairportdistance", sqrt(pow(col('estarrivalairporthorizdistance'), 2)+pow(col('estarrivalairportvertdistance'), 2)))
+        calculated0 = DynamicFrame.fromDF(estairportdistanceDf, glueContext, "calculated0")
 
-        datasink1 = glueContext.write_dynamic_frame.from_catalog(frame = applymapping0, database = "flights_analyser", table_name = "flights_analyser_public_flights", redshift_tmp_dir = args["TempDir"], transformation_ctx = "datasink1")
+        datasink1 = glueContext.write_dynamic_frame.from_catalog(frame = calculated0, database = "flights_analyser", table_name = "flights_analyser_public_flights", redshift_tmp_dir = args["TempDir"], transformation_ctx = "datasink1")
 glueContext.forEachBatch(frame = data_frame_datasource0, batch_function = processBatch, options = {"windowSize": "5 seconds", "checkpointLocation": args["TempDir"] + "/checkpoint/"})
 job.commit()
